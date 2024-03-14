@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+
+
+public class LoadingScript : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        string apiKey = "NjVjNjA0MGY0Njc3MGQ1YzY2MTcyMmM5OjY1YzYwNDBmNDY3NzBkNWM2NjE3MjJiZg";
+        string jsonRequestBody = "{\"apiKey\":\"" + apiKey + "\"}";
+        StartCoroutine(PostRequest("http://20.15.114.131:8080/api/login", jsonRequestBody));
+    }
+
+    IEnumerator PostRequest(string url, string jsonPayload)
+    {
+        using (UnityWebRequest webRequest = new UnityWebRequest(url, "POST"))
+        {
+            byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
+            webRequest.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            webRequest.downloadHandler = new DownloadHandlerBuffer();
+            webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            // Send the request and wait for a response
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                SceneManager.LoadScene("Main menu");
+            }
+            else
+            {
+                // Request failed, log the error
+                Debug.LogError("Error: " + webRequest.error);
+            }
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+      
+
+ }
+
+
