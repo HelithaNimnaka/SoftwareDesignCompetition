@@ -1,1 +1,1 @@
-# SoftwareDesignCompetition
+Sentinels
