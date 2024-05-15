@@ -1,1 +1,1 @@
-Sentinels
+Team name - Sentinels
